@@ -87,10 +87,10 @@ void* CThreadPool::ThreadFunc(void* threadData)
         /**
         * 取出一个任务并处理之
         */
-        CTask* task = *iter;
+        CTask* task ; //= *iter
         if (iter != m_vecTaskList.end())
         {
-            task = *iter;
+        	task = *iter;
             m_vecTaskList.erase(iter);
         }
 
@@ -146,9 +146,11 @@ int CThreadPool::StopAll()
     pthread_cond_broadcast(&m_pthreadCond);
 
     /** 阻塞等待线程退出，否则就成僵尸了 */
-    for (int i = 0; i < m_iThreadNum; i++)
+    vector<pthread_t>::iterator iter=m_pthreadID.begin();
+    while(iter<m_pthreadID.end())
     {
-        pthread_join(m_pthreadID[i], NULL);
+        pthread_join(*iter, NULL);
+        iter++;
     }
 
     //delete [] m_pthreadID;
