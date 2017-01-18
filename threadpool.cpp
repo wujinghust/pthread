@@ -34,6 +34,7 @@ void* CThreadPool::ThreadFunc(void* threadData)
         pthread_mutex_lock(&m_pthreadMutex);
         while (m_vecTaskList.size() == 0 && !shutdown)
         {
+        	cout << "thread "<<tid <<" is idle , waiting for task...."<<endl;
             pthread_cond_wait(&m_pthreadCond, &m_pthreadMutex);
         }
 
@@ -44,7 +45,7 @@ void* CThreadPool::ThreadFunc(void* threadData)
             pthread_exit(NULL);
         }
 
-        cout <<"tid "<<tid<<" run\n";
+        cout <<"thread "<<tid<<" is running.....\n";
         vector<CTask*>::iterator iter = m_vecTaskList.begin();
 
         /**
@@ -60,7 +61,7 @@ void* CThreadPool::ThreadFunc(void* threadData)
         pthread_mutex_unlock(&m_pthreadMutex);
 
         task->Run(); /** 执行任务 */
-        cout<<"tid: "<<tid <<" idle\n";
+        cout<<"thread: "<<tid <<"is idle, waiting for task.....\n";
     }
     return (void*)0;
 }
@@ -103,7 +104,7 @@ int CThreadPool::StopAll()
     {
         return -1;
     }
-    cout <<"Now I will end all threads!!" <<endl;
+    cout <<"Now I will destroy all threads!!" <<endl;
     /** 唤醒所有等待线程，线程池要销毁了 */
     shutdown = true;
     pthread_cond_broadcast(&m_pthreadCond);
@@ -139,7 +140,7 @@ int CThreadPool::getTaskSize()
  */
 bool CThreadPool::Isfull()
 {
-	if(m_vecTaskList.size()==m_iThreadNum)
+	if(m_iThreadNum==m_maxthreads)
 		return true;
 	else
 		return false;
