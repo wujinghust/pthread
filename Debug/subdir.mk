@@ -4,13 +4,19 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
-../main.cpp 
+../ctask.cpp \
+../main.cpp \
+../threadpool.cpp 
 
 OBJS += \
-./main.o 
+./ctask.o \
+./main.o \
+./threadpool.o 
 
 CPP_DEPS += \
-./main.d 
+./ctask.d \
+./main.d \
+./threadpool.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes

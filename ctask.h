@@ -22,24 +22,14 @@ protected:
     void* m_ptrData;       /** 要执行的任务的具体数据 */
 public:
     CTask(){}
-    CTask(string taskName)
-    {
-        m_strTaskName = taskName;
-        m_ptrData = NULL;
-    }
+    CTask(string taskName);
+    CTask(void* m_ptrData);
+    CTask(string taskName,void* m_ptrData);
     virtual int Run()= 0;
     void SetData(void* data);    /** 设置任务数据 */
 
 public:
     virtual ~CTask(){}
 };
-
-void CTask::SetData(void * data)
-{
-    m_ptrData = data;
-}
-
-
-
 
 #endif /* CTASK_H_ */
