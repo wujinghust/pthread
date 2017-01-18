@@ -9,15 +9,23 @@
 
 int main()
 {
-    CMyTask taskObj;
-
-    char szTmp[] = "this is the first thread running";
-    taskObj.SetData((void*)szTmp);
     CThreadPool threadPool(10);
 
-    for(int i = 0; i < 20; i++)
+    CMyTask taskObj;
+    char szTmp[] = "this is the first thread running";
+    taskObj.SetData((void*)szTmp);
+
+    for(int i = 0; i < 5; i++)
     {
         threadPool.AddTask(&taskObj);
+    }
+
+    CMyTask taskObj2;
+    char szTmp2[] = "this is the second thread running";
+    taskObj2.SetData((void*)szTmp2);
+    for(int i = 0; i < 5; i++)
+    {
+        threadPool.AddTask(&taskObj2);
     }
 
     while(1)
