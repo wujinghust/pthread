@@ -22,12 +22,13 @@ class CThreadPool
 private:
     static  vector<CTask*> m_vecTaskList;     /** 任务列表 */
     static  bool shutdown;                    /** 线程退出标志 */
-    unsigned int     m_iThreadNum;            /** 线程池中启动的线程数 */
-    unsigned int     m_idlethreads;           /**空闲线程个数*/
-    unsigned int     m_maxthreads;            /**最大线程个数*/
-
+    static  int     m_busyThreadNum;            /** 线程池中启动的线程数 */
+    static  int     m_idleThreadNum;           /**空闲线程个数*/
+    static  int     m_maxThreadNum;            /**最大线程个数*/
+    static vector<pthread_t> m_vecIdleThread;   //当前空闲的线程集合
+    static vector<pthread_t> m_vecBusyThread;   //当前正在执行的线程集合
     //pthread_t   *pthread_id;
-    vector<pthread_t> m_pthreadID;            /**线程队列*/
+  //  vector<pthread_t> m_pthreadID;            /**线程队列*/
 
     static pthread_mutex_t m_pthreadMutex;    /** 线程同步锁 */
     static pthread_cond_t m_pthreadCond;      /** 线程同步的条件变量 */
@@ -42,8 +43,12 @@ protected:
 public:
     CThreadPool(int threadNum = 10);
     int AddTask(CTask *task);      /** 把任务添加到任务队列中 */
-    int StopAll();                 /** 使线程池中的线程退出 */
+    int StopAllThreads();                 /** 使线程池中的线程退出 */
     int getTaskSize();             /** 获取当前任务队列中的任务数 */
+    bool DestroyThreadPool();
+    bool ADDThreads(int threadNum);
+    bool StartTask();
+
     bool Isfull();
 };
 
