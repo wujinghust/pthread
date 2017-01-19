@@ -18,7 +18,8 @@ public:
 
     inline int Run()
     {
-       cout <<(char*)this->m_ptrData <<endl;
+    	cout <<"task name: "<<m_strTaskName<<endl;
+        cout <<"Data: "<<(char*)this->m_ptrData <<endl;
         sleep(10);
         return 0;
     }
